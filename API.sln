@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{6349313D-F648-4CED-B06C-AFDB6F590774}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackathon", "Hackathon\Hackathon.csproj", "{05016435-FA1B-4028-B0DA-299CC38536BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6349313D-F648-4CED-B06C-AFDB6F590774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6349313D-F648-4CED-B06C-AFDB6F590774}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6349313D-F648-4CED-B06C-AFDB6F590774}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6349313D-F648-4CED-B06C-AFDB6F590774}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05016435-FA1B-4028-B0DA-299CC38536BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05016435-FA1B-4028-B0DA-299CC38536BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05016435-FA1B-4028-B0DA-299CC38536BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05016435-FA1B-4028-B0DA-299CC38536BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

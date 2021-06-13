@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>WebApplication1</AssemblyName>
-    <RootNamespace>WebApplication1</RootNamespace>
+    <AssemblyName>Hackathon</AssemblyName>
+    <RootNamespace>Hackathon</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

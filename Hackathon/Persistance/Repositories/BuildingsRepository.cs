@@ -1,13 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using WebApplication1.Models;
-using WebApplication1.Repositories;
+using Hackathon.Models;
+using Hackathon.Repositories;
 
-namespace WebApplication1.Persistance.Repositories
+namespace Hackathon.Persistance.Repositories
 {
     public class BuildingsRepository
     {

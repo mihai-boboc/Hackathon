@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using WebApplication1.Models;
-using WebApplication1.Persistance.Repositories;
-using WebApplication1.Repositories;
+using Hackathon.Persistance.Repositories;
 
-namespace WebApplication1.Controllers
+namespace Hackathon.Controllers
 {
     [ApiController]
     [Route("[controller]")]

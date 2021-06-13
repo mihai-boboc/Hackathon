@@ -1,13 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Protocols;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebApplication1.Models;
+using Hackathon.Models;
 
-namespace WebApplication1.Repositories
+namespace Hackathon.Repositories
 {
     public class ApplicationDbContext : DbContext
     {

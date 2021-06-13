@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebApplication1.Repositories;
+using Hackathon.Repositories;
 
-namespace WebApplication1.Migrations
+namespace Hackathon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210613153522_initial")]
