@@ -31,6 +31,7 @@ namespace WebApplication1
         {
             
             services.AddControllers();
+            services.AddCors();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddScoped<BuildingsRepository>();
@@ -53,6 +54,13 @@ namespace WebApplication1
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(
+                builder=>builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                );
 
             app.UseRouting();
 
