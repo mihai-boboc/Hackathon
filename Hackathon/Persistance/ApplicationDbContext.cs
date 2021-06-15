@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Hackathon.Models;
+using Hackathon.Persistance;
 
 namespace Hackathon.Repositories
 {
@@ -9,6 +10,11 @@ namespace Hackathon.Repositories
         {
         }
 
-        public DbSet<Buildings> Buildings { get; set; }
+        public DbSet<Departments> Departments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Seed();
+        }
     }
 }

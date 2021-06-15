@@ -1,6 +1,6 @@
-﻿namespace Hackathon.Models
+﻿namespace Hackathon.Models.DTOs
 {
-    public class Buildings
+    public class DepartmentDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

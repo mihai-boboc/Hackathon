@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hackathon.Models;
 using Hackathon.Repositories;
+using Hackathon.Abstractions.Repositories;
 
 namespace Hackathon.Persistance.Repositories
 {
-    public class BuildingsRepository
+    public class DepartmentsRepository: IDepartamentRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public BuildingsRepository(ApplicationDbContext dBcontext)
+        public DepartmentsRepository(ApplicationDbContext dBcontext)
         {
             _dbContext = dBcontext;
         }
 
-        public async Task<List<Buildings>> GetAllBuildings()
+        public async Task<List<Departments>> GetAllDepartmentsAsync()
         {
-            return await _dbContext.Buildings.ToListAsync();
+            return await _dbContext.Departments.ToListAsync();
         }
     }
 }

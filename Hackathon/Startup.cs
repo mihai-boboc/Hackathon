@@ -5,8 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Hackathon.Persistance.Repositories;
 using Hackathon.Repositories;
+using Hackathon.Persistance;
 
 namespace Hackathon
 {
@@ -22,17 +22,16 @@ namespace Hackathon
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            services.ConfigureServicesAndRepositories();
             services.AddControllers();
             services.AddCors();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Database")));
-            services.AddScoped<BuildingsRepository>();
-
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication1", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HackathonApi", Version = "v1" });
             });
         }
 
@@ -43,7 +42,7 @@ namespace Hackathon
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplication1 v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HackathonApi v1"));
             }
 
             app.UseHttpsRedirection();
