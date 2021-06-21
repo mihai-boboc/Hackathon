@@ -4,11 +4,11 @@ using Hackathon.Models.DTOs;
 
 namespace Hackathon.Persistance.AutoMapper
 {
-    public class StatusMapper: Profile
+    public class PinTypesMapper: Profile
     {
-        public StatusMapper()
+        public PinTypesMapper()
         {
-            CreateMap<StatusDto, Status>()
+            CreateMap<PinTypesDto, PinTypes>()
                 .ForMember(source => source.Id, option => option.Ignore())
                 .ReverseMap();
         }

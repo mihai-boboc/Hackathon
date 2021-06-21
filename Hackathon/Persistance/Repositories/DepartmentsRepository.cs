@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hackathon.Models;
-using Hackathon.Repositories;
 using Hackathon.Abstractions.Repositories;
 
 namespace Hackathon.Repositories

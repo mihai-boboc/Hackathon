@@ -6,19 +6,19 @@ namespace Hackathon.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class StatusController:ControllerBase
+    public class PinTypesController: ControllerBase
     {
-        private readonly IStatusService _statusService;
+        private readonly IPinTypesService _pinTypeService;
 
-        public StatusController(IStatusService statusService)
+        public PinTypesController(IPinTypesService pinTypesService)
         {
-            _statusService = statusService;
+            _pinTypeService = pinTypesService;
         }
 
         [HttpGet]
         public async Task<IActionResult> ReturnAll()
         {
-            return Ok(await _statusService.GetAllAsync());
+            return Ok(await _pinTypeService.GetAllAsync());
         }
     }
 }

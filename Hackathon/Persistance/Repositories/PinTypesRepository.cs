@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace Hackathon.Persistance.Repositories
 {
-    public class StatusRepository : IStatusRepository
+    public class PinTypesRepository: IPinTypesRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public StatusRepository(ApplicationDbContext dBcontext)
+        public PinTypesRepository(ApplicationDbContext dBcontext)
         {
             _dbContext = dBcontext;
         }
 
-        public async Task<List<Status>> GetAllAsync()
+        public async Task<List<PinTypes>> GetAllAsync()
         {
-            return await _dbContext.Status.ToListAsync();
+            return await _dbContext.PinTypes.ToListAsync();
         }
     }
 }
