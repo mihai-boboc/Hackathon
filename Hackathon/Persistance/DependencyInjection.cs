@@ -19,6 +19,9 @@ namespace Hackathon.Persistance
 
             services.AddTransient<IStatusRepository,StatusRepository>();
             services.AddTransient<IStatusService,StatusService>();
+
+            services.AddTransient<IPinTypesRepository, PinTypesRepository>();
+            services.AddTransient<IPinTypesService, PinTypesService>();
         }       
     }
 }

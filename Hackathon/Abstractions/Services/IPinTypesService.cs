@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Hackathon.Abstractions.Services
 {
-    public interface IStatusService
+    public interface IPinTypesService
     {
-        Task<List<StatusDto>> GetAllAsync();
+        Task<List<PinTypesDto>> GetAllAsync();
     }
 }

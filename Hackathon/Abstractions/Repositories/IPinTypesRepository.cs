@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Hackathon.Abstractions.Repositories
 {
-    public interface IStatusRepository
+    public interface IPinTypesRepository
     {
-        Task<List<Status>> GetAllAsync();
+        Task<List<PinTypes>> GetAllAsync();
     }
 }
