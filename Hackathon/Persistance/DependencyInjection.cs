@@ -28,6 +28,14 @@ namespace Hackathon.Persistance
 
             services.AddTransient<IPinsRepository, PinsRepository>();
             services.AddTransient<IPinService, PinsService>();
+
+            services.AddTransient<IIssuesRepository, IssuesRepository>();
+            services.AddTransient<IIssuesService, IssuesService>();
+
+            services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<IPhotoService, PhotoService>();
+
         }       
     }
 }
