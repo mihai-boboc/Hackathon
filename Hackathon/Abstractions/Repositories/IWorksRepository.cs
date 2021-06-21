@@ -1,0 +1,19 @@
+﻿using Hackathon.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Hackathon.Abstractions.Repositories
+{
+    public interface IWorksRepository
+    {
+        Task<bool> CreateWorkAsync(Works work);
+        Task<bool> DeleteWorkAsync(int id);
+        Task<List<Works>> GetAllWorksAsync();
+        Task<Works> GetWorksByIdAsync(int id);
+        Task<List<Works>> GetWorksByPinIdAsync(int id);
+        Task<bool> UpdateWorkAsync(Works work);
+    }
+}
