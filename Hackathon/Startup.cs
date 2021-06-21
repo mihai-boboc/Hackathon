@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Hackathon.Repositories;
 using Hackathon.Persistance;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Hackathon
 {
@@ -23,6 +24,12 @@ namespace Hackathon
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureServicesAndRepositories();
+            services.AddHealthChecks()
+                .AddDbContextCheck<ApplicationDbContext>(
+                    "Db-Check",
+                    HealthStatus.Unhealthy,
+                    tags: new[] {"DbCheck" }
+                );
             services.AddControllers();
             services.AddCors();
 
@@ -63,6 +70,7 @@ namespace Hackathon
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
     }
