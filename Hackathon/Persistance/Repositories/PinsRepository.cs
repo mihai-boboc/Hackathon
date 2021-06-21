@@ -8,33 +8,32 @@ using System.Threading.Tasks;
 
 namespace Hackathon.Persistance.Repositories
 {
-    public class WorksRepository:IWorksRepository
+    public class PinsRepository : IPinsRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public WorksRepository(ApplicationDbContext dBcontext)
+        public PinsRepository(ApplicationDbContext dBcontext)
         {
             _dbContext = dBcontext;
         }
-
-        public async Task<List<Works>> GetAllWorksAsync()
+        public async Task<List<Pins>> GetAllPinsAsync()
         {
-            return await _dbContext.Works.ToListAsync();
+            return await _dbContext.Pins.ToListAsync();
         }
 
-        public async Task<Works> GetWorksByIdAsync(int id)
+        public async Task<Pins> GetPinByIdAsync(int id)
         {
-            return await _dbContext.Works.SingleOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Pins.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<Works>> GetWorksByPinIdAsync(int id)
+        public async Task<List<Pins>> GetPinsByType(int pinTypeId)
         {
-            return await _dbContext.Works.Where(x => x.PinId == id).ToListAsync();
+            return await _dbContext.Pins.Where(x => x.PinTypeId == pinTypeId).ToListAsync();
         }
 
-        public async Task<bool> CreateWorkAsync(Works work)
+        public async Task<bool> CreatePinAsync(Pins pin)
         {
-            await _dbContext.Works.AddAsync(work);
+            _dbContext.Pins.Add(pin);
             try
             {
                 await _dbContext.SaveChangesAsync();
@@ -46,9 +45,9 @@ namespace Hackathon.Persistance.Repositories
             return true;
         }
 
-        public async Task<bool> UpdateWorkAsync(Works work)
+        public async Task<bool> UpdatePinAsync(Pins pin)
         {
-            _dbContext.Update(work);
+            _dbContext.Update(pin);
             try
             {
                 await _dbContext.SaveChangesAsync();
@@ -60,10 +59,10 @@ namespace Hackathon.Persistance.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteWorkAsync(int id)
+        public async Task<bool> DeletePinAsync(int id)
         {
-            var work = await _dbContext.Works.SingleOrDefaultAsync(x => x.Id == id);
-            _dbContext.Remove(work);
+            var pin = await _dbContext.Pins.SingleOrDefaultAsync(x => x.Id == id);
+            _dbContext.Pins.Remove(pin);
             try
             {
                 await _dbContext.SaveChangesAsync();

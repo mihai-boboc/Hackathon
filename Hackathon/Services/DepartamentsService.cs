@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Hackathon.Abstractions.Repositories;
 using Hackathon.Abstractions.Services;
-using Hackathon.Models;
 using Hackathon.Models.DTOs;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 
 namespace Hackathon.Services
