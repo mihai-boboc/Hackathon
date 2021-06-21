@@ -4,14 +4,16 @@ using Hackathon.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hackathon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210621102042_generate_models")]
+    partial class generate_models
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,19 +42,16 @@ namespace Hackathon.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "first.department@sibiu_inventory.com",
                             Name = "First Departament"
                         },
                         new
                         {
                             Id = 2,
-                            Email = "second.department@sibiu_inventory.com",
                             Name = "Second Departament"
                         },
                         new
                         {
                             Id = 3,
-                            Email = "third.department@sibiu_inventory.com",
                             Name = "Third Departament"
                         });
                 });
@@ -96,78 +95,6 @@ namespace Hackathon.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PinTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Housing"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Collective Housing"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Commercial"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Turism"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Industrial"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Sport"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Health"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Education and Research"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Culture"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Religious"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Infrastructure"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Office Building"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Historical"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Special"
-                        });
                 });
 
             modelBuilder.Entity("Hackathon.Models.Pins", b =>
@@ -209,23 +136,6 @@ namespace Hackathon.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Status");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Pending"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Ongoing"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Finished"
-                        });
                 });
 
             modelBuilder.Entity("Hackathon.Models.Works", b =>
