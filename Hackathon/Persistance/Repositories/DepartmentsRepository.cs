@@ -19,5 +19,26 @@ namespace Hackathon.Repositories
         {
             return await _dbContext.Departments.ToListAsync();
         }
+
+        public async Task<Departments> GetDepartmentByIdAsync(int id)
+        {
+            return await _dbContext.Departments.SingleOrDefaultAsync(x=>x.Id == id);
+        }
+
+        public async Task<bool> UpdateDepartmentAsync(Departments department)
+        {
+            _dbContext.Update(department);
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+
+        }
     }
 }

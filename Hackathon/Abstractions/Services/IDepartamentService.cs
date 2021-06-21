@@ -6,6 +6,8 @@ namespace Hackathon.Abstractions.Services
 {
     public interface IDepartamentService
     {
-        Task<List<DepartmentDto>> GetAllDepartmentsAsync();
+        Task<List<DepartmentsDto>> GetAllDepartmentsAsync();
+        Task<DepartmentsDto> GetDepartmentByIdAsync(int id);
+        Task<DepartmentsDto> UpdateDepartmentAsync(int id, DepartmentsDto departmentDto);
     }
 }
