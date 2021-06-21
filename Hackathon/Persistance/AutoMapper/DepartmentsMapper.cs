@@ -8,7 +8,7 @@ namespace Hackathon.Persistance.AutoMapper
     {
         public DepartmentsMapper()
         {
-            CreateMap<DepartmentDto, Departments>()
+            CreateMap<DepartmentsDto, Departments>()
                 .ForMember(source => source.Id, option => option.Ignore())
                 .ReverseMap();
         }
