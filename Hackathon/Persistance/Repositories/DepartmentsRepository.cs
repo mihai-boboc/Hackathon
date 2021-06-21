@@ -36,9 +36,7 @@ namespace Hackathon.Repositories
             {
                 return false;
             }
-
             return true;
-
         }
     }
 }

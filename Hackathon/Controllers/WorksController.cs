@@ -1,10 +1,6 @@
 ﻿using Hackathon.Abstractions.Services;
 using Hackathon.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hackathon.Controllers
@@ -53,7 +49,7 @@ namespace Hackathon.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> UpdateWorks(int id)
+        public async Task<IActionResult> DeleteWorks(int id)
         {
             var result = await _worksService.DeleteWorkAsync(id);
             return result ? Ok() : BadRequest();
