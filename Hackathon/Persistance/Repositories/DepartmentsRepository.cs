@@ -5,7 +5,7 @@ using Hackathon.Models;
 using Hackathon.Repositories;
 using Hackathon.Abstractions.Repositories;
 
-namespace Hackathon.Persistance.Repositories
+namespace Hackathon.Repositories
 {
     public class DepartmentsRepository: IDepartamentRepository
     {

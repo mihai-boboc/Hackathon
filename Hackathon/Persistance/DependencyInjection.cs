@@ -3,8 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Hackathon.Services;
 using Hackathon.Abstractions.Repositories;
 using Hackathon.Abstractions.Services;
-using AutoMapper;
 using Hackathon.Persistance.AutoMapper;
+using Hackathon.Repositories;
 
 namespace Hackathon.Persistance
 {
@@ -13,8 +13,12 @@ namespace Hackathon.Persistance
         public static void ConfigureServicesAndRepositories(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(DepartmentsMapper));
+
             services.AddTransient<IDepartamentRepository,DepartmentsRepository>();
             services.AddTransient<IDepartamentService,DepartamentsService>();
+
+            services.AddTransient<IStatusRepository,StatusRepository>();
+            services.AddTransient<IStatusService,StatusService>();
         }       
     }
 }
