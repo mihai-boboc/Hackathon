@@ -12,120 +12,141 @@ namespace Hackathon.Services
     {
         private readonly IIssuesRepository _issuesRepository;
         private readonly IUserService _userService;
-        private readonly IPhotoService _photoService;
-        private readonly IMapper _mapper;
+        private readonly IPhotoRepository _photoRepository;
 
         public IssuesService(IIssuesRepository issuesRepository,
                              IUserService userService,
-                             IPhotoService photoService,
-                             IMapper mapper)
+                             IPhotoRepository photoRepository)
         {
             _issuesRepository = issuesRepository;
             _userService = userService;
-            _photoService = photoService;
-            _mapper = mapper;
+            _photoRepository = photoRepository;
         }
 
         public async Task<List<IssuesDto>> GetAllIssuesAsync()
         {
+            var issuesDtoList = new List<IssuesDto>();
+
             var issuesList = await _issuesRepository.GetAllIssuesAsync();
-            return MapToDto(issuesList);
+
+            foreach (var issue in issuesList)
+            {
+                var photo = await _photoRepository.GetPhotoAsync(issue.PhotoName);
+
+                issuesDtoList.Add(new IssuesDto
+                {
+                    Id = issue.Id,
+                    Details = issue.Details,
+                    PinId = issue.PinId,
+                    Photo = photo.PhotoByteArray
+                });
+            }
+
+            return issuesDtoList;
         }
 
         public async Task<IssuesDto> GetIssuesByIdAsync(int id)
         {
             var issue = await _issuesRepository.GetIssuesByIdAsync(id);
-            return MapToDto(issue);
+            var photo = await _photoRepository.GetPhotoAsync(issue.PhotoName);
+
+            return new IssuesDto
+            {
+                Id = issue.Id,
+                Details = issue.Details,
+                PinId = issue.PinId,
+                Photo = photo.PhotoByteArray
+            };
         }
 
         public async Task<List<IssuesDto>> GetIssuesByPinIdAsync(int pinId)
         {
+            var issuesDtoList = new List<IssuesDto>();
+
             var issuesList = await _issuesRepository.GetIssuesByPinIdAsync(pinId);
-            return MapToDto(issuesList);
+
+            foreach (var issue in issuesList)
+            {
+                var photo = await _photoRepository.GetPhotoAsync(issue.PhotoName);
+
+                issuesDtoList.Add(new IssuesDto {
+                        Id = issue.Id,
+                        Details = issue.Details,
+                        PinId = issue.PinId,
+                        Photo = photo.PhotoByteArray
+                    });             
+            }
+
+            return issuesDtoList;
         }
 
         public async Task<IssuesDto> CreateIssuesAsync(IssuesDto issuesDto)
         {
-            var issueEntity = MapToEntity(issuesDto);
+            var photo = await _photoRepository.SavePhotoAsync(issuesDto.Photo);
+
+            var issueEntity = new Issues
+            {
+                PhotoName = photo.Id.ToString(),
+                OwnerEmail = _userService.GetUserEmail(),
+
+                PinId = issuesDto.PinId,
+                Details = issuesDto.Details
+            };
 
             if (await _issuesRepository.CreateIssuesAsync(issueEntity))
             {
-                return MapToDto(issueEntity);
+                return new IssuesDto 
+                {
+                    Id = issueEntity.Id,
+                    Photo = photo.PhotoByteArray,
+                    PinId = issueEntity.PinId,
+                    Details = issueEntity.Details
+                };
             }
             return default(IssuesDto);
         }
 
         public async Task<IssuesDto> UpdateIssuesAsync(int id, IssuesDto issuesDto)
         {
-            var issueEntity = await MapToUpdatedEntity(id, issuesDto);
+            var issueEntity = await _issuesRepository.GetIssuesByIdAsync(id);
+
+            if (!await _photoRepository.UpdatePhotoAsync(issueEntity.PhotoName, issuesDto.Photo))
+            {
+                return default(IssuesDto);
+            }
+
+            issueEntity.PinId = issuesDto.PinId;
+            issueEntity.Details = issuesDto.Details;
+
+            var photo = await _photoRepository.GetPhotoAsync(issueEntity.PhotoName);
 
             if (await _issuesRepository.UpdateIssuesAsync(issueEntity))
             {
-                return MapToDto(issueEntity);
+                return new IssuesDto
+                {
+                    Id = issueEntity.Id,
+                    Details = issueEntity.Details,
+                    PinId = issueEntity.PinId,
+                    Photo = photo.PhotoByteArray
+                };
             }
             return default(IssuesDto);
         }
 
         public async Task<bool> DeleteIssuesAsync(int id)
         {
+            var issue = await _issuesRepository.GetIssuesByIdAsync(id);
+
+            if(!await _photoRepository.DeletePhotoAsync(issue.PhotoName))
+            {
+                return false;
+            }
+
             if (await _issuesRepository.DeleteIssuesAsync(id))
             {
                 return true;
             }
             return false;
-        }
-
-        private IssuesDto MapToDto(Issues issueEntity)
-        {
-            return new IssuesDto
-            {
-                PinId = issueEntity.PinId,
-                Details = issueEntity.Details,
-                Id = issueEntity.Id,
-                Photo = _photoService.GetPhoto(issueEntity.PhotoName)
-            };
-        }
-
-        private List<IssuesDto> MapToDto(List<Issues> issueEntityList)
-        {
-            var dtoList = new List<IssuesDto>();
-
-            issueEntityList.ForEach(x =>
-            {
-                dtoList.Add(new IssuesDto
-                {
-                    PinId = x.PinId,
-                    Details = x.Details,
-                    Id = x.Id,
-                    Photo = _photoService.GetPhoto(x.PhotoName)
-                });
-
-            });
-
-            return dtoList;
-        }
-
-        private async Task<Issues> MapToUpdatedEntity(int id, IssuesDto issuesDto)
-        {
-            var issueEntity = await _issuesRepository.GetIssuesByIdAsync(id);
-
-            issueEntity.OwnerEmail = _userService.GetUserEmail();
-            issueEntity.PhotoName = _photoService.UpdatePhoto(issueEntity.PhotoName, issuesDto.Photo);
-            issueEntity.PinId = issuesDto.PinId;
-            issueEntity.Details = issuesDto.Details;
-
-            return issueEntity;
-        }
-
-        private Issues MapToEntity(IssuesDto issuesDto)
-        {
-            return new Issues
-            {
-                OwnerEmail = _userService.GetUserEmail(),
-                PhotoName = _photoService.SavePhoto(issuesDto.Photo),
-                PinId = issuesDto.PinId,
-                Details = issuesDto.Details
-            };
         }
     }
 }

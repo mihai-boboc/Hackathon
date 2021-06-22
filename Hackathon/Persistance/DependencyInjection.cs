@@ -34,7 +34,7 @@ namespace Hackathon.Persistance
 
             services.AddTransient<IUserService, UserService>();
 
-            services.AddTransient<IPhotoService, PhotoService>();
+            services.AddTransient<IPhotoRepository, PhotoRepository>();
 
         }       
     }
