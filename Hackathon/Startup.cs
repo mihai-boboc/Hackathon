@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Hackathon.Repositories;
 using Hackathon.Persistance;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System;
 
 namespace Hackathon
 {
@@ -39,8 +40,13 @@ namespace Hackathon
             services.AddControllers();
             services.AddCors();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Database")));
+            services.AddDbContext<ApplicationDbContext>(options => 
+            {
+                string defaultConnectionData = Configuration.GetConnectionString("Database");
+                string databaseName = Environment.GetEnvironmentVariable("DATABASE") ?? "HackathonDev";
+                string updatedConnectionData = defaultConnectionData.Replace("Hackathon", databaseName);
+                options.UseSqlServer(updatedConnectionData);
+            });
 
             services.AddDbContext<PhotoDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PhotoDatabase")));
