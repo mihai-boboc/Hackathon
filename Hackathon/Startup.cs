@@ -31,6 +31,12 @@ namespace Hackathon
                     HealthStatus.Unhealthy,
                     tags: new[] {"DbCheck" }
                 );
+            services.AddHealthChecks()
+                .AddDbContextCheck<PhotoDbContext>(
+                    "Photo-Db-Check",
+                    HealthStatus.Unhealthy,
+                    tags: new[] { "PhotoDbCheck" }
+                );
             services.AddControllers();
             services.AddCors();
 
@@ -41,7 +47,10 @@ namespace Hackathon
                 string updatedConnectionData = defaultConnectionData.Replace("Hackathon", databaseName);
                 options.UseSqlServer(updatedConnectionData);
             });
-            
+
+            services.AddDbContext<PhotoDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("PhotoDatabase")));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HackathonApi", Version = "v1" });
@@ -49,9 +58,10 @@ namespace Hackathon
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dbContext,PhotoDbContext photoDbContext)
         {
             dbContext.Database.Migrate();
+            photoDbContext.Database.Migrate();
 
             if (env.IsDevelopment())
             {
