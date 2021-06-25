@@ -363,3 +363,9 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 Hackathon/appsettings.Development.json
+
+#Azure settings
+ServiceDependencies/
+Hackathon/Properties/serviceDependencies.json
+Hackathon/Properties/serviceDependencies.SibiuInventoryApi - Web Deploy.json
+Hackathon/appsettings.Development.json
