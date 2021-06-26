@@ -1,4 +1,5 @@
 ﻿using Hackathon.Abstractions.Services;
+using Hackathon.Common;
 using Hackathon.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -19,40 +20,43 @@ namespace Hackathon.Controllers
         [HttpGet]
         public async Task<IActionResult> ReturnAll()
         {
-            return Ok(await _issuesService.GetAllIssuesAsync());
+            var response = await _issuesService.GetAllIssuesAsync();
+            return response.ToActionResult() ;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> ReturnIssuesById(int id)
         {
-            return Ok(await _issuesService.GetIssuesByIdAsync(id));
+            var response = await _issuesService.GetIssuesByIdAsync(id);
+            return response.ToActionResult();
         }
 
         [HttpGet("pin/{id}")]
         public async Task<IActionResult> GetIssuesByPinId(int id)
         {
-            return Ok(await _issuesService.GetIssuesByPinIdAsync(id));
+            var response = await _issuesService.GetIssuesByPinIdAsync(id);
+            return response.ToActionResult();
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateIssues(IssuesDto issuesDto)
         {
-            var result = await _issuesService.CreateIssuesAsync(issuesDto);
-            return result != null ? Ok(result) : BadRequest();
+            var response = await _issuesService.CreateIssuesAsync(issuesDto);
+            return response.ToActionResult();
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateIssues(int id, IssuesDto issuesDto)
         {
-            var result = await _issuesService.UpdateIssuesAsync(id, issuesDto);
-            return result != null ? Ok(result) : Conflict();
+            var response = await _issuesService.UpdateIssuesAsync(id, issuesDto);
+            return response.ToActionResult();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteIssues(int id)
         {
-            var result = await _issuesService.DeleteIssuesAsync(id);
-            return result ? Ok() : BadRequest();
+            var response = await _issuesService.DeleteIssuesAsync(id);
+            return response.ToActionResult();
         }
 
     }

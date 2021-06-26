@@ -1,4 +1,5 @@
-﻿using Hackathon.Models.DTOs;
+﻿using Hackathon.Common;
+using Hackathon.Models.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,11 +7,11 @@ namespace Hackathon.Abstractions.Services
 {
     public interface IIssuesService
     {
-        Task<IssuesDto> CreateIssuesAsync(IssuesDto issuesDto);
-        Task<bool> DeleteIssuesAsync(int id);
-        Task<List<IssuesDto>> GetAllIssuesAsync();
-        Task<IssuesDto> GetIssuesByIdAsync(int id);
-        Task<List<IssuesDto>> GetIssuesByPinIdAsync(int pinId);
-        Task<IssuesDto> UpdateIssuesAsync(int id, IssuesDto issuesDto);
+        Task<Result<IssuesDto>> CreateIssuesAsync(IssuesDto issuesDto);
+        Task<Result<bool>> DeleteIssuesAsync(int id);
+        Task<Result<List<IssuesDto>>> GetAllIssuesAsync();
+        Task<Result<IssuesDto>> GetIssuesByIdAsync(int id);
+        Task<Result<List<IssuesDto>>> GetIssuesByPinIdAsync(int pinId);
+        Task<Result<IssuesDto>> UpdateIssuesAsync(int id, IssuesDto issuesDto);
     }
 }
