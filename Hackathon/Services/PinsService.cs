@@ -92,6 +92,7 @@ namespace Hackathon.Services
             }
 
             pinEntity.Description = pinDto.Description;
+            pinEntity.Name = pinDto.Name;
             pinEntity.GpsCoordX = pinDto.GpsCoordX;
             pinEntity.GpsCoordY = pinDto.GpsCoordY;
             pinEntity.PinTypeId = pinDto.PinTypeId;

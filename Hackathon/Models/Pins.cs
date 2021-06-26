@@ -9,6 +9,7 @@ namespace Hackathon.Models
         public int PinTypeId { get; set; }
         public float GpsCoordX { get; set; }
         public float GpsCoordY { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
 
         public virtual List<Issues> Issues { get; set; }

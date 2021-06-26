@@ -12,6 +12,7 @@ namespace Hackathon.Abstractions.Services
         Task<Result<List<IssuesDto>>> GetAllIssuesAsync();
         Task<Result<IssuesDto>> GetIssuesByIdAsync(int id);
         Task<Result<List<IssuesDto>>> GetIssuesByPinIdAsync(int pinId);
+        Task<Result<List<IssuesDto>>> GetIssuesByPinStatusIdAsync(int statusId);
         Task<Result<IssuesDto>> UpdateIssuesAsync(int id, IssuesDto issuesDto);
     }
 }

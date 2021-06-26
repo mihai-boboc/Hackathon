@@ -11,6 +11,7 @@ namespace Hackathon.Abstractions.Repositories
         Task<List<Issues>> GetAllIssuesAsync();
         Task<Issues> GetIssuesByIdAsync(int id);
         Task<List<Issues>> GetIssuesByPinIdAsync(int id);
+        Task<List<Issues>> GetIssuesByStatusAsync(int statusId);
         Task<bool> UpdateIssuesAsync(Issues issue);
     }
 }
