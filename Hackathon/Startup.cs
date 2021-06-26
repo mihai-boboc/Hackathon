@@ -9,11 +9,15 @@ using Hackathon.Repositories;
 using Hackathon.Persistance;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 
 namespace Hackathon
 {
     public class Startup
     {
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -40,6 +44,14 @@ namespace Hackathon
             services.AddControllers();
             services.AddCors();
 
+            services.AddAuthentication(options => 
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer();
+
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("Database")));
 
@@ -50,6 +62,7 @@ namespace Hackathon
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HackathonApi", Version = "v1" });
             });
+            services.AddTransient<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,12 +71,10 @@ namespace Hackathon
             dbContext.Database.Migrate();
             photoDbContext.Database.Migrate();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HackathonApi v1"));
-            }
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HackathonApi v1"));
+
 
             app.UseHttpsRedirection();
 
@@ -75,7 +86,7 @@ namespace Hackathon
                 );
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

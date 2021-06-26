@@ -1,9 +1,12 @@
 ﻿using Hackathon.Abstractions.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hackathon.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PinTypesController: ControllerBase
@@ -18,6 +21,7 @@ namespace Hackathon.Controllers
         [HttpGet]
         public async Task<IActionResult> ReturnAll()
         {
+            //var ownerId = User.Claims.FirstOrDefault(c => c.Type.Contains("sid"))?.Value;
             return Ok(await _pinTypeService.GetAllAsync());
         }
     }
