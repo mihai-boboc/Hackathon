@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hackathon.Abstractions.Repositories;
 using Hackathon.Abstractions.Services;
+using Hackathon.Common;
 using Hackathon.Models.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,11 +19,11 @@ namespace Hackathon.Services
             _mapper = mapper;
         }
 
-        public async Task<List<PinTypesDto>> GetAllAsync()
+        public async Task<Result<List<PinTypesDto>>> GetAllAsync()
         {
             var pinTypesList = await _pinTypesRepository.GetAllAsync();
 
-            return _mapper.Map<List<PinTypesDto>>(pinTypesList);
+            return Result.OK(_mapper.Map<List<PinTypesDto>>(pinTypesList));
 
         }
     }

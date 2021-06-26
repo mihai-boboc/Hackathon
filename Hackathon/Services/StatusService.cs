@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hackathon.Abstractions.Repositories;
 using Hackathon.Abstractions.Services;
+using Hackathon.Common;
 using Hackathon.Models.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,11 +20,10 @@ namespace Hackathon.Services
             this.mapper = mapper;
         }
 
-
-        public async Task<List<StatusDto>> GetAllAsync()
+        public async Task<Result<List<StatusDto>>> GetAllAsync()
         {
             var statusList = await _statusRepository.GetAllAsync();
-            return mapper.Map<List<StatusDto>>(statusList);
+            return Result.OK(mapper.Map<List<StatusDto>>(statusList));
         }
     }
 }

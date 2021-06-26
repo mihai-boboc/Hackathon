@@ -1,4 +1,5 @@
 ﻿using Hackathon.Abstractions.Services;
+using Hackathon.Common;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -18,7 +19,8 @@ namespace Hackathon.Controllers
         [HttpGet]
         public async Task<IActionResult> ReturnAll()
         {
-            return Ok(await _statusService.GetAllAsync());
+            var result = await _statusService.GetAllAsync();
+            return result.ToActionResult();
         }
     }
 }

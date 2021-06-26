@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hackathon.Abstractions.Repositories;
 using Hackathon.Abstractions.Services;
+using Hackathon.Common;
 using Hackathon.Models;
 using Hackathon.Models.DTOs;
 using System.Collections.Generic;
@@ -19,37 +20,42 @@ namespace Hackathon.Services
             _mapper = mapper;
         }
 
-        public async Task<List<WorksDto>> GetAllWorksAsync()
+        public async Task<Result<List<WorksDto>>> GetAllWorksAsync()
         {
             var worksList =  await _worksRepository.GetAllWorksAsync();
-            return _mapper.Map<List<WorksDto>>(worksList);
+            return Result.OK(_mapper.Map<List<WorksDto>>(worksList));
         }
 
-        public async Task<WorksDto> GetWorksByIdAsync(int id)
+        public async Task<Result<WorksDto>> GetWorksByIdAsync(int id)
         {
             var works = await _worksRepository.GetWorksByIdAsync(id);
-            return _mapper.Map<WorksDto>(works);
+            return Result.OK(_mapper.Map<WorksDto>(works));
         }
 
-        public async Task<List<WorksDto>> GetWorksByPinIdAsync(int pinId)
+        public async Task<Result<List<WorksDto>>> GetWorksByPinIdAsync(int pinId)
         {
             var worksList = await _worksRepository.GetWorksByPinIdAsync(pinId);
-            return _mapper.Map<List<WorksDto>>(worksList);
+            return Result.OK(_mapper.Map<List<WorksDto>>(worksList));
         }
 
-        public async Task<WorksDto> CreateWorkAsync(WorksDto worksDto)
+        public async Task<Result<WorksDto>> CreateWorkAsync(WorksDto worksDto)
         {
             var workEntity = _mapper.Map<Works>(worksDto);
             if(await _worksRepository.CreateWorkAsync(workEntity))
             {
-                return _mapper.Map<WorksDto>(workEntity);
+                return Result.OK(_mapper.Map<WorksDto>(workEntity));
             }
-            return default(WorksDto);
+            return Result.InternalServerError<WorksDto>();
         }
 
-        public async Task<WorksDto> UpdateWorkAsync(int id, WorksDto worksDto)
+        public async Task<Result<WorksDto>> UpdateWorkAsync(int id, WorksDto worksDto)
         {
             var workEntity = await _worksRepository.GetWorksByIdAsync(id);
+
+            if(workEntity == null)
+            {
+                return Result.NotFound<WorksDto>().AddErrors("id", "The id is not valid");
+            }
 
             workEntity.Details = worksDto.Details;
             workEntity.DepartmentId = worksDto.DepartmentId;
@@ -58,18 +64,18 @@ namespace Hackathon.Services
 
             if (await _worksRepository.UpdateWorkAsync(workEntity))
             {
-                return _mapper.Map<WorksDto>(workEntity);
+                return Result.OK(_mapper.Map<WorksDto>(workEntity));
             }
-            return default(WorksDto);
+            return Result.InternalServerError<WorksDto>();
         }
 
-        public async Task<bool> DeleteWorkAsync(int id)
+        public async Task<Result<bool>> DeleteWorkAsync(int id)
         {
             if (await _worksRepository.DeleteWorkAsync(id))
             {
-                return true;
+                return Result.OK(true);
             }
-            return false;
+            return Result.InternalServerError<bool>() ;
         }
     }
 }
