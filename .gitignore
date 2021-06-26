@@ -369,3 +369,6 @@ ServiceDependencies/
 Hackathon/Properties/serviceDependencies.json
 Hackathon/Properties/serviceDependencies.SibiuInventoryApi - Web Deploy.json
 Hackathon/appsettings.Development.json
+/AuthenticationApi/.config
+/AuthenticationApi/Properties/serviceDependencies.json
+/AuthenticationApi/Properties/serviceDependencies.SibiuInventoryAuthApi - Web Deploy.json
