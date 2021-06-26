@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackathon", "Hackathon\Hackathon.csproj", "{05016435-FA1B-4028-B0DA-299CC38536BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationApi", "AuthenticationApi\AuthenticationApi.csproj", "{555DFCB2-8840-4F0C-8421-572A15F096C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationApi", "AuthenticationApi\AuthenticationApi.csproj", "{555DFCB2-8840-4F0C-8421-572A15F096C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimisoaraInventoryTestProject", "TimisoaraInventoryTestProject\TimisoaraInventoryTestProject.csproj", "{9B38C06B-51E5-441F-ADE1-0C6F768CEE12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{555DFCB2-8840-4F0C-8421-572A15F096C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{555DFCB2-8840-4F0C-8421-572A15F096C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{555DFCB2-8840-4F0C-8421-572A15F096C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B38C06B-51E5-441F-ADE1-0C6F768CEE12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B38C06B-51E5-441F-ADE1-0C6F768CEE12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B38C06B-51E5-441F-ADE1-0C6F768CEE12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B38C06B-51E5-441F-ADE1-0C6F768CEE12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
