@@ -27,6 +27,11 @@ namespace Hackathon.Persistance.Repositories
             return await _dbContext.Issues.SingleOrDefaultAsync(x=>x.Id == id);
         }
 
+        public async Task<List<Issues>> GetIssuesByStatusAsync(int statusId)
+        {
+            return await _dbContext.Issues.Where(x => x.StatusId == statusId).ToListAsync();
+        }
+
         public async Task<List<Issues>> GetIssuesByPinIdAsync(int id)
         {
             return await _dbContext.Issues.Where(x => x.PinId == id).ToListAsync();

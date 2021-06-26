@@ -14,16 +14,19 @@ namespace Hackathon.Services
         private readonly IIssuesRepository _issuesRepository;
         private readonly IUserService _userService;
         private readonly IPhotoRepository _photoRepository;
+        private readonly IStatusRepository _statusRepository;
         private readonly IPinsRepository _pinsRepository;
 
         public IssuesService(IIssuesRepository issuesRepository,
                              IUserService userService,
                              IPhotoRepository photoRepository,
+                             IStatusRepository statusRepository,
                              IPinsRepository pinsRepository)
         {
             _issuesRepository = issuesRepository;
             _userService = userService;
             _photoRepository = photoRepository;
+            _statusRepository = statusRepository;
             _pinsRepository = pinsRepository;
         }
 
@@ -95,6 +98,33 @@ namespace Hackathon.Services
             return Result.OK(issuesDtoList);
         }
 
+        public async Task<Result<List<IssuesDto>>> GetIssuesByPinStatusIdAsync(int statusId)
+        {
+            var issuesDtoList = new List<IssuesDto>();
+
+            var issuesList = await _issuesRepository.GetIssuesByStatusAsync(statusId);
+
+            if (issuesList == null)
+            {
+                return Result.BadRequest<List<IssuesDto>>().AddErrors("statusId", "The statusId is invalid");
+            }
+
+            foreach (var issue in issuesList)
+            {
+                var photo = await _photoRepository.GetPhotoAsync(issue.PhotoName);
+
+                issuesDtoList.Add(new IssuesDto
+                {
+                    Id = issue.Id,
+                    Details = issue.Details,
+                    PinId = issue.PinId,
+                    Photo = photo.PhotoByteArray
+                });
+            }
+
+            return Result.OK(issuesDtoList);
+        }
+
         public async Task<Result<IssuesDto>> CreateIssuesAsync(IssuesDto issuesDto)
         {
             var photo = await _photoRepository.SavePhotoAsync(issuesDto.Photo);
@@ -115,13 +145,15 @@ namespace Hackathon.Services
 
             if (await _issuesRepository.CreateIssuesAsync(issueEntity))
             {
-                return Result.OK(new IssuesDto 
+                return Result.OK(new IssuesDto
                 {
                     Id = issueEntity.Id,
+                    StatusId = 1,
+                    Date = System.DateTime.Now,
                     Photo = photo.PhotoByteArray,
                     PinId = issueEntity.PinId,
                     Details = issueEntity.Details
-                });
+                });;
             }
             return Result.InternalServerError(default(IssuesDto));
         }
@@ -141,7 +173,12 @@ namespace Hackathon.Services
                 validationCheck.AddErrors("PinId", "PinId is not valid");
             }
 
-            if(validationCheck.errors.Count > 0)
+            if (!await _statusRepository.CheckStatus(issuesDto.StatusId))
+            {
+                validationCheck.AddErrors("StatusId", "StatusId is not valid");
+            }
+
+            if (validationCheck.errors.Count > 0)
             {
                 return validationCheck;
             }

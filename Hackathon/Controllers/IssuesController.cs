@@ -21,7 +21,7 @@ namespace Hackathon.Controllers
         public async Task<IActionResult> ReturnAll()
         {
             var response = await _issuesService.GetAllIssuesAsync();
-            return response.ToActionResult() ;
+            return response.ToActionResult();
         }
 
         [HttpGet("{id}")]
@@ -35,6 +35,13 @@ namespace Hackathon.Controllers
         public async Task<IActionResult> GetIssuesByPinId(int id)
         {
             var response = await _issuesService.GetIssuesByPinIdAsync(id);
+            return response.ToActionResult();
+        }
+
+        [HttpGet("status/{id}")]
+        public async Task<IActionResult> GetIssuesByStatusId(int statusId)
+        {
+            var response = await _issuesService.GetIssuesByPinStatusIdAsync(statusId);
             return response.ToActionResult();
         }
 
