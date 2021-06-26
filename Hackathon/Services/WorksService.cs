@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hackathon.Abstractions.Repositories;
 using Hackathon.Abstractions.Services;
+using Hackathon.Common;
 using Hackathon.Models;
 using Hackathon.Models.DTOs;
 using System.Collections.Generic;
@@ -11,45 +12,102 @@ namespace Hackathon.Services
     public class WorksService:IWorksService
     {
         private readonly IWorksRepository _worksRepository;
+        private readonly IPinsRepository _pinsRepository;
+        private readonly IStatusRepository _statusRepository;
         private readonly IMapper _mapper;
 
-        public WorksService(IWorksRepository worksRepository, IMapper mapper)
+        public WorksService(IWorksRepository worksRepository,
+                            IPinsRepository pinsRepository,
+                            IStatusRepository statusRepository,
+                            IMapper mapper)
         {
             _worksRepository = worksRepository;
+            _pinsRepository = pinsRepository;
+            _statusRepository = statusRepository;
             _mapper = mapper;
         }
 
-        public async Task<List<WorksDto>> GetAllWorksAsync()
+        public async Task<Result<List<WorksDto>>> GetAllWorksAsync()
         {
             var worksList =  await _worksRepository.GetAllWorksAsync();
-            return _mapper.Map<List<WorksDto>>(worksList);
+            return Result.OK(_mapper.Map<List<WorksDto>>(worksList));
         }
 
-        public async Task<WorksDto> GetWorksByIdAsync(int id)
-        {
-            var works = await _worksRepository.GetWorksByIdAsync(id);
-            return _mapper.Map<WorksDto>(works);
-        }
-
-        public async Task<List<WorksDto>> GetWorksByPinIdAsync(int pinId)
-        {
-            var worksList = await _worksRepository.GetWorksByPinIdAsync(pinId);
-            return _mapper.Map<List<WorksDto>>(worksList);
-        }
-
-        public async Task<WorksDto> CreateWorkAsync(WorksDto worksDto)
-        {
-            var workEntity = _mapper.Map<Works>(worksDto);
-            if(await _worksRepository.CreateWorkAsync(workEntity))
-            {
-                return _mapper.Map<WorksDto>(workEntity);
-            }
-            return default(WorksDto);
-        }
-
-        public async Task<WorksDto> UpdateWorkAsync(int id, WorksDto worksDto)
+        public async Task<Result<WorksDto>> GetWorksByIdAsync(int id)
         {
             var workEntity = await _worksRepository.GetWorksByIdAsync(id);
+
+            if (workEntity == null)
+            {
+                return Result.NotFound<WorksDto>().AddErrors("id", "The id is not valid");
+            }
+            return Result.OK(_mapper.Map<WorksDto>(workEntity));
+        }
+
+        public async Task<Result<List<WorksDto>>> GetWorksByPinIdAsync(int pinId)
+        {
+            var worksList = await _worksRepository.GetWorksByPinIdAsync(pinId);
+            if (worksList == null)
+            {
+                return Result.NotFound<List<WorksDto>>().AddErrors("pinId", "The pinId is not valid");
+            }
+
+            return Result.OK(_mapper.Map<List<WorksDto>>(worksList));
+        }
+
+        public async Task<Result<WorksDto>> CreateWorkAsync(WorksDto worksDto)
+        {
+
+            var validationTest = Result.BadRequest<WorksDto>();
+
+            if (!await _pinsRepository.CheckPin(worksDto.PinId))
+            {
+                validationTest.AddErrors("PinId", "PinId is not valid");
+            }
+
+            if (!await _statusRepository.CheckStatus(worksDto.StatusId))
+            {
+                validationTest.AddErrors("StatusId", "StatusId is not valid");
+            }
+
+            if (validationTest.errors.Count > 0)
+            {
+                return validationTest;
+            }
+
+            var workEntity = _mapper.Map<Works>(worksDto);
+
+            if (await _worksRepository.CreateWorkAsync(workEntity))
+            {
+                return Result.OK(_mapper.Map<WorksDto>(workEntity));
+            }
+            return Result.BadRequest<WorksDto>();
+        }
+
+        public async Task<Result<WorksDto>> UpdateWorkAsync(int id, WorksDto worksDto)
+        {
+            var workEntity = await _worksRepository.GetWorksByIdAsync(id);
+            var validationTest = Result.BadRequest<WorksDto>();
+
+            if(workEntity == null)
+            {
+                validationTest.AddErrors("id", "The id is not valid");
+            }
+
+            if (!await _pinsRepository.CheckPin(worksDto.PinId))
+            {
+                validationTest.AddErrors("PinId", "PinId is not valid");
+            }
+
+            if (!await _statusRepository.CheckStatus(worksDto.StatusId))
+            {
+                validationTest.AddErrors("StatusId", "StatusId is not valid");
+            }
+
+            if(validationTest.errors.Count > 0)
+            {
+                return validationTest;
+            }
 
             workEntity.Details = worksDto.Details;
             workEntity.DepartmentId = worksDto.DepartmentId;
@@ -58,18 +116,18 @@ namespace Hackathon.Services
 
             if (await _worksRepository.UpdateWorkAsync(workEntity))
             {
-                return _mapper.Map<WorksDto>(workEntity);
+                return Result.OK(_mapper.Map<WorksDto>(workEntity));
             }
-            return default(WorksDto);
+            return Result.InternalServerError<WorksDto>();
         }
 
-        public async Task<bool> DeleteWorkAsync(int id)
+        public async Task<Result<bool>> DeleteWorkAsync(int id)
         {
             if (await _worksRepository.DeleteWorkAsync(id))
             {
-                return true;
+                return Result.OK(true);
             }
-            return false;
+            return Result.InternalServerError<bool>() ;
         }
     }
 }

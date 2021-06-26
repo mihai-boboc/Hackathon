@@ -1,4 +1,5 @@
 ﻿using Hackathon.Abstractions.Services;
+using Hackathon.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -22,7 +23,8 @@ namespace Hackathon.Controllers
         public async Task<IActionResult> ReturnAll()
         {
             //var ownerId = User.Claims.FirstOrDefault(c => c.Type.Contains("sid"))?.Value;
-            return Ok(await _pinTypeService.GetAllAsync());
+            var result = await _pinTypeService.GetAllAsync();
+            return result.ToActionResult();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Hackathon.Abstractions.Services;
+using Hackathon.Common;
 using Hackathon.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -19,40 +20,43 @@ namespace Hackathon.Controllers
         [HttpGet]
         public async Task<IActionResult> ReturnAll()
         {
-            return Ok(await _pinService.GetAllPinsAsync());
+            var result = await _pinService.GetAllPinsAsync();
+            return result.ToActionResult();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> ReturnPinById(int id)
         {
-            return Ok(await _pinService.GetPinsByIdAsync(id));
+            var result = await _pinService.GetPinsByIdAsync(id);
+            return result.ToActionResult();
         }
 
         [HttpGet("type/{typeId}")]
         public async Task<IActionResult> ReturnPinByType(int typeId)
         {
-            return Ok(await _pinService.GetPinsByTypeAsync(typeId));
+            var result = await _pinService.GetPinsByTypeAsync(typeId);
+            return result.ToActionResult();
         }
 
         [HttpPost]
         public async Task<IActionResult> CreatePin(PinsDto pinsDto)
         {
             var result = await _pinService.CreatePinAsync(pinsDto);
-            return result != null ? Ok(result) : BadRequest();
+            return result.ToActionResult();
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePin(int id, PinsDto worksDto)
         {
             var result = await _pinService.UpdatePinAsync(id, worksDto);
-            return result != null ? Ok(result) : Conflict();
+            return result.ToActionResult();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePin(int id)
         {
             var result = await _pinService.DeletePinAsync(id);
-            return result ? Ok() : BadRequest();
+            return result.ToActionResult();
         }
     }
 }

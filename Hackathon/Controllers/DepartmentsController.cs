@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Hackathon.Abstractions.Services;
 using Hackathon.Models.DTOs;
+using Hackathon.Common;
 
 namespace Hackathon.Controllers
 {
@@ -19,20 +20,22 @@ namespace Hackathon.Controllers
         [HttpGet]
         public async Task<IActionResult> ReturnAll()
         {
-            return Ok(await _departamentsService.GetAllDepartmentsAsync());
+            var response = await _departamentsService.GetAllDepartmentsAsync();
+            return response.ToActionResult();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> ReturnDepartmentById(int id)
         {
-            return Ok(await _departamentsService.GetDepartmentByIdAsync(id));
+            var response = await _departamentsService.GetDepartmentByIdAsync(id);
+            return response.ToActionResult();
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateDepartment(int id, DepartmentsDto departamentsDto)
         {
             var updatedDepartment = await _departamentsService.UpdateDepartmentAsync(id, departamentsDto);
-            return updatedDepartment != null ? Ok(updatedDepartment) : Conflict();
+            return updatedDepartment.ToActionResult();
         }
 
     }

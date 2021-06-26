@@ -6,6 +6,7 @@ namespace Hackathon.Abstractions.Repositories
 {
     public interface IPinTypesRepository
     {
+        Task<bool> CheckPinType(int id);
         Task<List<PinTypes>> GetAllAsync();
     }
 }
