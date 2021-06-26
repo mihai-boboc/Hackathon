@@ -2,13 +2,10 @@ using AutoMapper;
 using Hackathon.Abstractions.Repositories;
 using Hackathon.Models;
 using Hackathon.Models.DTOs;
-using Hackathon.Persistance.AutoMapper;
 using Hackathon.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace TimisoaraInventoryTestProject
@@ -27,10 +24,10 @@ namespace TimisoaraInventoryTestProject
             Assert.IsNotNull(result);
             /*task.RunSynchronously();
             var result = task.Result;*/
-            Assert.IsInstanceOfType(result, typeof (List<PinTypesDto>));
+            Assert.IsInstanceOfType(result, typeof(List<PinTypesDto>));
             var firstElement = result.FirstOrDefault();
             Assert.IsNotNull(firstElement);
-            Assert.AreEqual(2, firstElement.Id);
+            Assert.AreEqual(1, firstElement.Id);
         }
     }
     public class PinTypeRepositoryMockup : IPinTypesRepository
@@ -45,4 +42,4 @@ namespace TimisoaraInventoryTestProject
             return Task.Run(() => { return dummyData; });
         }
     }
- }
+}
