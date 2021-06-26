@@ -20,5 +20,10 @@ namespace Hackathon.Persistance.Repositories
         {
             return await _dbContext.Status.ToListAsync();
         }
+
+        public async Task<bool> CheckStatus(int id)
+        {
+            return await _dbContext.Status.SingleOrDefaultAsync(x => x.Id == id) != null;
+        }
     }
 }

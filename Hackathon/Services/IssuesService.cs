@@ -14,14 +14,17 @@ namespace Hackathon.Services
         private readonly IIssuesRepository _issuesRepository;
         private readonly IUserService _userService;
         private readonly IPhotoRepository _photoRepository;
+        private readonly IPinsRepository _pinsRepository;
 
         public IssuesService(IIssuesRepository issuesRepository,
                              IUserService userService,
-                             IPhotoRepository photoRepository)
+                             IPhotoRepository photoRepository,
+                             IPinsRepository pinsRepository)
         {
             _issuesRepository = issuesRepository;
             _userService = userService;
             _photoRepository = photoRepository;
+            _pinsRepository = pinsRepository;
         }
 
         public async Task<Result<List<IssuesDto>>> GetAllIssuesAsync()
@@ -96,6 +99,11 @@ namespace Hackathon.Services
         {
             var photo = await _photoRepository.SavePhotoAsync(issuesDto.Photo);
 
+            if (!await _pinsRepository.CheckPin(issuesDto.PinId))
+            {
+                return Result.BadRequest<IssuesDto>().AddErrors("PinId", "PinId is not valid");
+            }
+
             var issueEntity = new Issues
             {
                 PhotoName = photo.Id.ToString(),
@@ -121,14 +129,26 @@ namespace Hackathon.Services
         public async Task<Result<IssuesDto>> UpdateIssuesAsync(int id, IssuesDto issuesDto)
         {
             var issueEntity = await _issuesRepository.GetIssuesByIdAsync(id);
+            var validationCheck = Result.BadRequest<IssuesDto>();
+
             if(issueEntity == null)
             {
-                return Result.BadRequest<IssuesDto>().AddErrors("id", "The id is not valid");
+                validationCheck.AddErrors("id", "The id is not valid");
+            }
+
+            if (!await _pinsRepository.CheckPin(issuesDto.PinId))
+            {
+                validationCheck.AddErrors("PinId", "PinId is not valid");
+            }
+
+            if(validationCheck.errors.Count > 0)
+            {
+                return validationCheck;
             }
 
             if (!await _photoRepository.UpdatePhotoAsync(issueEntity.PhotoName, issuesDto.Photo))
             {
-                return Result.InternalServerError(default(IssuesDto));
+                return Result.InternalServerError(default(IssuesDto)).AddErrors("photoRepository","failed to retrive photo");
             }
 
             issueEntity.PinId = issuesDto.PinId;
@@ -159,14 +179,14 @@ namespace Hackathon.Services
 
             if(!await _photoRepository.DeletePhotoAsync(issue.PhotoName))
             {
-                return Result.InternalServerError(false);
+                return Result.InternalServerError(false).AddErrors("photoRepository","failed to delete photo");
             }
 
             if (await _issuesRepository.DeleteIssuesAsync(id))
             {
                 return Result.OK(true);
             }
-            return Result.InternalServerError(false);
+            return Result.InternalServerError(false).AddErrors("issuesRepository","failed to delete entry");
         }
     }
 }

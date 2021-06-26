@@ -20,6 +20,21 @@ namespace Hackathon.Common
             return result;
         }
 
+        public static Result AddErrors(this Result result, Dictionary<string,List<string>> errors)
+        {
+            foreach(var key in errors.Keys)
+            {
+                if(!errors.ContainsKey(key))
+                    result.errors.Add(key, new List<string>());
+
+                foreach (var error in errors[key])
+                {
+                    result.errors[key].Add(error);
+                }
+            }
+            return result;
+        }
+
         public static Result<T> AddErrors<T>(this Result<T> result, string key, params string[] errors)
         {
             result.errors.Add(key, new List<string>());
@@ -28,6 +43,21 @@ namespace Hackathon.Common
                 result.errors[key].Add(error);
             }
 
+            return result;
+        }
+
+        public static Result<T> AddErrors<T>(this Result<T> result, Dictionary<string, List<string>> errors)
+        {
+            foreach (var key in errors.Keys)
+            {
+                if (!result.errors.ContainsKey(key))
+                    result.errors.Add(key, new List<string>());
+
+                foreach (var error in errors[key])
+                {
+                    result.errors[key].Add(error);
+                }
+            }
             return result;
         }
 

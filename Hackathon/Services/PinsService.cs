@@ -12,11 +12,15 @@ namespace Hackathon.Services
     public class PinsService : IPinService
     {
         private readonly IPinsRepository _pinsRepository;
+        private readonly IPinTypesRepository _pinTypesRepository;
         private readonly IMapper _mapper;
 
-        public PinsService(IPinsRepository pinsRepository, IMapper mapper)
+        public PinsService(IPinsRepository pinsRepository, 
+                           IPinTypesRepository pinTypesRepository,
+                           IMapper mapper)
         {
             _pinsRepository = pinsRepository;
+            _pinTypesRepository = pinTypesRepository;
             _mapper = mapper;
         }
 
@@ -54,6 +58,12 @@ namespace Hackathon.Services
         public async Task<Result<PinsDto>> CreatePinAsync(PinsDto pinDto)
         {
             var pinEntity = _mapper.Map<Pins>(pinDto);
+
+            if (!await _pinTypesRepository.CheckPinType(pinDto.PinTypeId))
+            {
+                return Result.BadRequest<PinsDto>().AddErrors("PinTypeId", "PinTypeId is not valid");
+            }
+
             if (await _pinsRepository.CreatePinAsync(pinEntity))
             {
                 return Result.OK(_mapper.Map<PinsDto>(pinEntity));
@@ -64,10 +74,21 @@ namespace Hackathon.Services
         public async Task<Result<PinsDto>> UpdatePinAsync(int id,PinsDto pinDto)
         {
             var pinEntity = await _pinsRepository.GetPinByIdAsync(id);
+            var validationCheck = Result.BadRequest<PinsDto>();
 
             if(pinEntity == null)
             {
-                return Result.NotFound<PinsDto>().AddErrors("id", "The id is not valid");
+                validationCheck.AddErrors("id", "The id is not valid");
+            }
+
+            if (!await _pinTypesRepository.CheckPinType(pinDto.PinTypeId))
+            {
+                validationCheck.AddErrors("PinTypeId", "PinTypeId is not valid");
+            }
+
+            if(validationCheck.errors.Count > 0)
+            {
+                return validationCheck;
             }
 
             pinEntity.Description = pinDto.Description;

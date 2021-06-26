@@ -6,6 +6,7 @@ namespace Hackathon.Abstractions.Repositories
 {
     public interface IStatusRepository
     {
+        Task<bool> CheckStatus(int id);
         Task<List<Status>> GetAllAsync();
     }
 }

@@ -38,5 +38,10 @@ namespace Hackathon.Repositories
             }
             return true;
         }
+
+        public async Task<bool> CheckDepartment(int id)
+        {
+            return await _dbContext.Departments.SingleOrDefaultAsync(x => x.Id == id) != null ;
+        }
     }
 }

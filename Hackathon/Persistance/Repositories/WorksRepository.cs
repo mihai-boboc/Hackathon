@@ -1,7 +1,9 @@
 ﻿using Hackathon.Abstractions.Repositories;
+using Hackathon.Common;
 using Hackathon.Models;
 using Hackathon.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,9 +43,9 @@ namespace Hackathon.Persistance.Repositories
             }
             catch
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         public async Task<bool> UpdateWorkAsync(Works work)
@@ -73,6 +75,11 @@ namespace Hackathon.Persistance.Repositories
                 return false;
             }
             return true;
+        }
+
+        public async Task<bool> CheckWork(int id)
+        {
+            return await _dbContext.Works.SingleOrDefaultAsync(x => x.Id == id) != null;
         }
     }
 }

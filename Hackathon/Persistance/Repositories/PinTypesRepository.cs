@@ -20,5 +20,10 @@ namespace Hackathon.Persistance.Repositories
         {
             return await _dbContext.PinTypes.ToListAsync();
         }
+
+        public async Task<bool> CheckPinType(int id)
+        {
+            return await _dbContext.PinTypes.SingleOrDefaultAsync(x => x.Id == id) != null;
+        }
     }
 }
