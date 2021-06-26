@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hackathon.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PinTypesController: ControllerBase
