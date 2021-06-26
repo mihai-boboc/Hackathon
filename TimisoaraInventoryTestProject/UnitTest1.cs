@@ -34,7 +34,6 @@ namespace TimisoaraInventoryTestProject
         }
     }
     public class PinTypeRepositoryMockup : IPinTypesRepository
-
     {
         public Task<List<PinTypes>> GetAllAsync()
         {
