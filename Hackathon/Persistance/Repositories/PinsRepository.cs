@@ -33,7 +33,7 @@ namespace Hackathon.Persistance.Repositories
 
         public async Task<bool> CreatePinAsync(Pins pin)
         {
-            _dbContext.Pins.Add(pin);
+            await _dbContext.Pins.AddAsync(pin);
             try
             {
                 await _dbContext.SaveChangesAsync();

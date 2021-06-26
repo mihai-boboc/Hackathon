@@ -19,13 +19,17 @@ namespace AuthenticationApi.AuthService
         public string CreateUserAuthToken(string userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
+            var roleGenerator = new RoleGenerator();
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Audience = "AuthentificationApi",
                 Issuer = "AuthService",
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                        new Claim(ClaimTypes.Sid, userId.ToString())
+                        new Claim(ClaimTypes.Sid, userId.ToString()),
+                        new Claim(ClaimTypes.Role, roleGenerator.AssignRole(userId))
+
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = new SigningCredentials(_key, SecurityAlgorithms.RsaSha256)

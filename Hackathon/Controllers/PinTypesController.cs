@@ -21,7 +21,7 @@ namespace Hackathon.Controllers
         [HttpGet]
         public async Task<IActionResult> ReturnAll()
         {
-            var ownerId = User.Claims.FirstOrDefault(c => c.Type.Contains("identity"))?.Value;
+            //var ownerId = User.Claims.FirstOrDefault(c => c.Type.Contains("sid"))?.Value;
             return Ok(await _pinTypeService.GetAllAsync());
         }
     }
