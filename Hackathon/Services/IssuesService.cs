@@ -45,7 +45,9 @@ namespace Hackathon.Services
                     Id = issue.Id,
                     Details = issue.Details,
                     PinId = issue.PinId,
-                    Photo = photo.PhotoByteArray
+                    Photo = photo.PhotoByteArray,
+                    StatusId = issue.StatusId,
+                    Date = issue.Date
                 });
             }
 
@@ -68,7 +70,9 @@ namespace Hackathon.Services
                 Id = issue.Id,
                 Details = issue.Details,
                 PinId = issue.PinId,
-                Photo = photo.PhotoByteArray
+                Photo = photo.PhotoByteArray,
+                StatusId = issue.StatusId,
+                Date = issue.Date
             });
         }
 
@@ -91,8 +95,10 @@ namespace Hackathon.Services
                         Id = issue.Id,
                         Details = issue.Details,
                         PinId = issue.PinId,
-                        Photo = photo.PhotoByteArray
-                    });             
+                        Photo = photo.PhotoByteArray,
+                        StatusId = issue.StatusId,
+                        Date = issue.Date
+                });             
             }
 
             return Result.OK(issuesDtoList);
@@ -118,7 +124,9 @@ namespace Hackathon.Services
                     Id = issue.Id,
                     Details = issue.Details,
                     PinId = issue.PinId,
-                    Photo = photo.PhotoByteArray
+                    Photo = photo.PhotoByteArray,
+                    StatusId = issue.StatusId,
+                    Date = issue.Date
                 });
             }
 
@@ -139,6 +147,8 @@ namespace Hackathon.Services
                 PhotoName = photo.Id.ToString(),
                 OwnerEmail = _userService.GetUserEmail(),
 
+                Date = issuesDto.Date,
+                StatusId = issuesDto.StatusId,
                 PinId = issuesDto.PinId,
                 Details = issuesDto.Details
             };
@@ -190,6 +200,7 @@ namespace Hackathon.Services
 
             issueEntity.PinId = issuesDto.PinId;
             issueEntity.Details = issuesDto.Details;
+            issueEntity.StatusId = issuesDto.StatusId;
 
             var photo = await _photoRepository.GetPhotoAsync(issueEntity.PhotoName);
 
@@ -200,7 +211,9 @@ namespace Hackathon.Services
                     Id = issueEntity.Id,
                     Details = issueEntity.Details,
                     PinId = issueEntity.PinId,
-                    Photo = photo.PhotoByteArray
+                    Photo = photo.PhotoByteArray,
+                    Date = issueEntity.Date,
+                    StatusId = issueEntity.StatusId
                 });
             }
             return Result.InternalServerError(default(IssuesDto));

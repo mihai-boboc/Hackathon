@@ -38,7 +38,7 @@ namespace Hackathon.Controllers
             return response.ToActionResult();
         }
 
-        [HttpGet("status/{id}")]
+        [HttpGet("status/{statusId}")]
         public async Task<IActionResult> GetIssuesByStatusId(int statusId)
         {
             var response = await _issuesService.GetIssuesByPinStatusIdAsync(statusId);
