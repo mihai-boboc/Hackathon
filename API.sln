@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackathon", "Hackathon\Hack
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationApi", "AuthenticationApi\AuthenticationApi.csproj", "{555DFCB2-8840-4F0C-8421-572A15F096C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimisoaraInventoryTestProject", "TimisoaraInventoryTestProject\TimisoaraInventoryTestProject.csproj", "{9B38C06B-51E5-441F-ADE1-0C6F768CEE12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityInventoryTestProject", "TimisoaraInventoryTestProject\CityInventoryTestProject.csproj", "{9B38C06B-51E5-441F-ADE1-0C6F768CEE12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
